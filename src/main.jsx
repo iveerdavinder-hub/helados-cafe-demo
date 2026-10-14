@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import * as THREE from 'three';
 import {
   ArrowDown, ArrowDownRight, ArrowLeft, ArrowRight, ArrowUp, ArrowUpRight, Calendar, Car, Check, ChevronDown,
-  Clock3, Coffee, Compass, Copy, ExternalLink, Heart, IceCreamBowl, Instagram, Map, MapPin, Menu as MenuIcon,
+  Clock3, Coffee, Compass, Copy, ExternalLink, Facebook, FileText, Globe, Heart, IceCreamBowl, Instagram, Map, MapPin, Menu as MenuIcon,
   MessageCircle, Minus, Navigation, Phone, Plus, ShieldCheck, ShoppingBag, Sparkles, Star, Utensils, UtensilsCrossed, X
 } from 'lucide-react';
 import AdminPanel from './AdminPanel';
@@ -1135,10 +1135,109 @@ function DirectionsMapBox({ address, onCopyAddress }) {
   );
 }
 
+const LEGAL_POLICIES = {
+  privacy: {
+    title: 'Privacy Policy',
+    subtitle: 'Customer Data Protection & Transparency',
+    updated: 'October 2026',
+    sections: [
+      {
+        heading: '1. Information We Collect',
+        content: 'Cafe Helados collects guest contact details (such as name, phone number, and seating preferences) solely when voluntarily submitted through table reservations, WhatsApp ordering, or newsletter updates.'
+      },
+      {
+        heading: '2. Usage of Your Information',
+        content: 'Your details are strictly used to coordinate your dine-in experience, verify takeaway packages, and send requested notifications. We never sell, rent, or trade customer contact details with third-party advertisers.'
+      },
+      {
+        heading: '3. Data Security & Storage',
+        content: 'Guest reservation records and digital orders are stored with industry-standard encryption protocols. You may request immediate removal of your contact information at any time by contacting counter management.'
+      }
+    ]
+  },
+  terms: {
+    title: 'Terms of Service',
+    subtitle: 'Guest Guidelines & Service Agreements',
+    updated: 'October 2026',
+    sections: [
+      {
+        heading: '1. Dine-in & Counter Service',
+        content: 'Cafe Helados operates daily from 11:00 AM to 11:30 PM at Charan Bagh, Patiala. Seating is accommodated on a first-come, first-served basis or through confirmed website reservations.'
+      },
+      {
+        heading: '2. Table Reservations',
+        content: 'Reserved tables are held for up to 15 minutes past the designated booking time before being released to walk-in guests during peak golden hours.'
+      },
+      {
+        heading: '3. Digital Orders & Availability',
+        content: 'Menu pricing, daily seasonal specials, and item availability are subject to fresh batch preparation. Exact delivery times and takeaway confirmations are finalized via our direct counter WhatsApp team.'
+      }
+    ]
+  },
+  refund: {
+    title: 'Refund & Cancellation Policy',
+    subtitle: 'Customer Satisfaction & Fair Orders',
+    updated: 'October 2026',
+    sections: [
+      {
+        heading: '1. Fresh Artisan Items',
+        content: 'Due to the perishable nature of handcrafted gelato scoops, hot brewed coffees, and fresh baked waffles, orders already prepared cannot be returned. If an item received does not match your order, an immediate replacement or full refund is provided.'
+      },
+      {
+        heading: '2. Table Cancellation',
+        content: 'Table reservations can be cancelled or rescheduled at any time without any cancellation fees or deposit deductions.'
+      },
+      {
+        heading: '3. Payment Disputes',
+        content: 'For counter UPI or digital payment discrepancies, refunds are initiated immediately to your source account within 24 to 48 banking hours.'
+      }
+    ]
+  },
+  safety: {
+    title: 'Food Safety & Hygiene Agreement',
+    subtitle: 'FSSAI Standards & Dairy Purity',
+    updated: 'October 2026',
+    sections: [
+      {
+        heading: '1. 100% Pure Artisan Dairy',
+        content: 'All gelato bases, sundaes, and shakes at Cafe Helados are made using 100% pure dairy cream and farm-fresh milk with zero hydrogenated vegetable fats or synthetic thickeners.'
+      },
+      {
+        heading: '2. Fresh Small-Batch Churning',
+        content: 'Gelato flavors are slow-churned in small batches daily in Patiala to guarantee optimum silky texture, peak freshness, and natural flavor retention.'
+      },
+      {
+        heading: '3. Kitchen Sanitization Protocols',
+        content: 'Our espresso machines, gelato spatulas, waffle irons, and prep counters undergo rigorous multi-step sanitization cycles throughout operating hours in strict adherence to FSSAI guidelines.'
+      }
+    ]
+  },
+  company: {
+    title: 'Company & Vendor Agreement',
+    subtitle: 'Corporate Ethics, Local Sourcing & B2B Partners',
+    updated: 'October 2026',
+    sections: [
+      {
+        heading: '1. Brand Ownership',
+        content: 'Cafe Helados is an independently owned, registered artisan cafe and dessert lounge based in Patiala, Punjab, India.'
+      },
+      {
+        heading: '2. Sourcing Standards',
+        content: 'We partner directly with sustainable coffee bean roasters, local organic dairy cooperatives, and authentic cocoa importers committed to ethical trade practices.'
+      },
+      {
+        heading: '3. Corporate & Event Catering',
+        content: 'Institutional catering, celebration bookings, and vendor collaborations are governed by formal service-level agreements executed directly through cafe management.'
+      }
+    ]
+  }
+};
+
 function App() {
   const [view, setView] = useState(() => window.location.hash === '#admin' ? 'admin' : 'store');
   const [menuItems, setMenuItems] = useState(getStoredMenu());
   const [settings, setSettings] = useState(getStoredSettings());
+  const [policyModal, setPolicyModal] = useState(null);
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState('Pizzas');
@@ -1654,21 +1753,43 @@ function App() {
         <p>Little moments.<br/><em>Big happy.</em></p>
         <div className="footer-nav">
           <div>
-            <span>EXPLORE</span>
-            <a href="#story">Our story</a>
-            <a href="#menu">The menu</a>
-            <a href="#experience">The feeling</a>
-            <a href="#ritual">Mood ritual</a>
-            <a href="#reviews">Reviews</a>
+            <span>SOCIAL MEDIA</span>
+            <a href="https://instagram.com/cafehelados" target="_blank" rel="noreferrer" title="Follow Cafe Helados on Instagram">
+              <Instagram size={13} /> Instagram <ArrowUpRight size={11} />
+            </a>
+            <a href="https://facebook.com/cafehelados" target="_blank" rel="noreferrer" title="Visit Cafe Helados on Facebook">
+              <Facebook size={13} /> Facebook <ArrowUpRight size={11} />
+            </a>
+            <a href={`https://wa.me/?text=${encodeURIComponent("Hi Cafe Helados! Reaching out via your website.")}`} target="_blank" rel="noreferrer" title="Chat with counter on WhatsApp">
+              <MessageCircle size={13} /> WhatsApp Direct <ArrowUpRight size={11} />
+            </a>
+            <a href={mapUrl} target="_blank" rel="noreferrer" title="Google Maps Reviews & Photos">
+              <MapPin size={13} /> Google Maps & Reviews <ArrowUpRight size={11} />
+            </a>
+            <a href="https://www.zomato.com/patiala" target="_blank" rel="noreferrer" title="Order on Zomato">
+              <UtensilsCrossed size={13} /> Zomato Patiala <ArrowUpRight size={11} />
+            </a>
+            <a href="https://www.swiggy.com/city/patiala" target="_blank" rel="noreferrer" title="Order on Swiggy">
+              <Sparkles size={13} /> Swiggy Delivery <ArrowUpRight size={11} />
+            </a>
           </div>
           <div>
-            <span>ORDERS & VISITS</span>
-            <button onClick={()=>setOrderModalOpen(true)}>Order online</button>
-            <button onClick={()=>setBookingOpen(true)}>Book a table</button>
-            <button onClick={()=>{ window.location.hash = '#admin'; setView('admin'); }}>Admin Console</button>
-            <a href="#visit">Find us</a>
-            <a href={mapUrl} target="_blank" rel="noreferrer">Directions <ArrowUpRight size={12}/></a>
-            <button onClick={()=>setCartOpen(true)}>Your order bag</button>
+            <span>POLICIES & AGREEMENTS</span>
+            <button type="button" onClick={() => setPolicyModal('privacy')} title="View Privacy Policy">
+              <FileText size={13} /> Privacy Policy
+            </button>
+            <button type="button" onClick={() => setPolicyModal('terms')} title="View Terms of Service">
+              <FileText size={13} /> Terms of Service
+            </button>
+            <button type="button" onClick={() => setPolicyModal('refund')} title="View Refund & Cancellation Policy">
+              <FileText size={13} /> Refund & Cancellation
+            </button>
+            <button type="button" onClick={() => setPolicyModal('safety')} title="View Food Safety & Hygiene Agreement">
+              <ShieldCheck size={13} /> Food Safety Agreement
+            </button>
+            <button type="button" onClick={() => setPolicyModal('company')} title="View Company & Vendor Agreement">
+              <Globe size={13} /> Company & Vendor Agreement
+            </button>
           </div>
         </div>
       </div>
@@ -1870,6 +1991,51 @@ function App() {
               <small>No advance deposit required · Free cancellation</small>
             </div>
           </form>
+        </div>
+      </div>
+    )}
+
+    {policyModal && LEGAL_POLICIES[policyModal] && (
+      <div className="modal-backdrop" onClick={() => setPolicyModal(null)}>
+        <div className="custom-modal policy-modal" onClick={e => e.stopPropagation()} role="dialog" aria-modal="true">
+          <div className="modal-head">
+            <div>
+              <span className="section-index">
+                <ShieldCheck size={13} /> LEGAL & COMPLIANCE · CAFE HELADOS
+              </span>
+              <h2>{LEGAL_POLICIES[policyModal].title}</h2>
+              <p>{LEGAL_POLICIES[policyModal].subtitle} · Updated {LEGAL_POLICIES[policyModal].updated}</p>
+            </div>
+            <button className="modal-close" onClick={() => setPolicyModal(null)} aria-label="Close modal">
+              <X size={20} />
+            </button>
+          </div>
+
+          <div className="policy-modal-body">
+            {LEGAL_POLICIES[policyModal].sections.map((sec, idx) => (
+              <div key={idx} className="policy-block">
+                <h4>{sec.heading}</h4>
+                <p>{sec.content}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="policy-modal-footer">
+            <div className="policy-company-info">
+              <CafeLogoMark size={28} />
+              <div>
+                <strong>Cafe Helados Patiala</strong>
+                <small>Opp. Punjabi Bagh Lane, Charan Bagh, Patiala, Punjab 147004</small>
+              </div>
+            </div>
+            <button 
+              type="button" 
+              className="btn btn-primary btn-sm"
+              onClick={() => setPolicyModal(null)}
+            >
+              I Understand & Agree
+            </button>
+          </div>
         </div>
       </div>
     )}
