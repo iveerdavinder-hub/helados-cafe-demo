@@ -3,8 +3,8 @@ import { createRoot } from 'react-dom/client';
 import * as THREE from 'three';
 import {
   ArrowDown, ArrowDownRight, ArrowLeft, ArrowRight, ArrowUp, ArrowUpRight, Calendar, Car, Check, ChevronDown,
-  Clock3, Coffee, Compass, Copy, ExternalLink, Facebook, FileText, Globe, Heart, IceCreamBowl, Instagram, Map, MapPin, Menu as MenuIcon,
-  MessageCircle, Minus, Navigation, Phone, Plus, ShieldCheck, ShoppingBag, Sparkles, Star, Utensils, UtensilsCrossed, X
+  Clock3, Coffee, Compass, Copy, ExternalLink, Facebook, FileText, Globe, Heart, IceCreamBowl, Instagram, Map, MapPin, Maximize2, Menu as MenuIcon,
+  MessageCircle, Minimize2, Minus, Navigation, Phone, Plus, ShieldCheck, ShoppingBag, Sparkles, Star, Utensils, UtensilsCrossed, X
 } from 'lucide-react';
 import AdminPanel from './AdminPanel';
 import {
@@ -870,6 +870,7 @@ function DirectionsMapBox({ address, onCopyAddress }) {
   const [activeStep, setActiveStep] = useState(0);
   const [travelMode, setTravelMode] = useState('drive');
   const [copied, setCopied] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
 
   const googleMapsUrl = 'https://maps.app.goo.gl/Z12Ydz5MpKPRvuaq5';
   const directNavigationUrl = 'https://www.google.com/maps/dir/?api=1&destination=30.3451682,76.3797209';
@@ -916,7 +917,7 @@ function DirectionsMapBox({ address, onCopyAddress }) {
   };
 
   return (
-    <div className="directions-box-container reveal">
+    <div className={`directions-box-container reveal ${isMinimized ? 'minimized' : ''}`}>
       {/* Header bar */}
       <div className="dir-box-header">
         <div className="dir-box-title">
@@ -930,30 +931,61 @@ function DirectionsMapBox({ address, onCopyAddress }) {
           </div>
         </div>
 
-        <div className="travel-mode-tabs">
+        <div className="dir-header-actions">
+          <div className="travel-mode-tabs">
+            <button 
+              type="button" 
+              className={`mode-tab ${travelMode === 'drive' ? 'active' : ''}`}
+              onClick={() => setTravelMode('drive')}
+              aria-label="Driving route: 4 minutes"
+            >
+              <Car size={13} />
+              <span>4 min drive</span>
+            </button>
+            <button 
+              type="button" 
+              className={`mode-tab ${travelMode === 'walk' ? 'active' : ''}`}
+              onClick={() => setTravelMode('walk')}
+              aria-label="Walking route: 12 minutes"
+            >
+              <Clock3 size={13} />
+              <span>12 min walk</span>
+            </button>
+          </div>
+
           <button 
-            type="button" 
-            className={`mode-tab ${travelMode === 'drive' ? 'active' : ''}`}
-            onClick={() => setTravelMode('drive')}
-            aria-label="Driving route: 4 minutes"
+            type="button"
+            className="btn-dir-minimize"
+            onClick={() => setIsMinimized(!isMinimized)}
+            title={isMinimized ? "Expand full map route" : "Minimize map box"}
           >
-            <Car size={13} />
-            <span>4 min drive</span>
-          </button>
-          <button 
-            type="button" 
-            className={`mode-tab ${travelMode === 'walk' ? 'active' : ''}`}
-            onClick={() => setTravelMode('walk')}
-            aria-label="Walking route: 12 minutes"
-          >
-            <Clock3 size={13} />
-            <span>12 min walk</span>
+            {isMinimized ? <Maximize2 size={13} /> : <Minimize2 size={13} />}
+            <span>{isMinimized ? 'Expand' : 'Minimize'}</span>
           </button>
         </div>
       </div>
 
-      {/* Main Box Grid */}
-      <div className="dir-box-body">
+      {isMinimized ? (
+        <div className="dir-minimized-strip">
+          <div className="dir-minimized-info">
+            <span className="minimized-beacon">📍</span>
+            <div>
+              <strong>Charan Bagh, Near Columbia Asia Hospital & 22 No. Phatak</strong>
+              <small>{travelMode === 'drive' ? '4 min drive' : '12 min walk'} · Patiala, Punjab 147004</small>
+            </div>
+          </div>
+          <div className="dir-minimized-actions">
+            <a href={googleMapsUrl} target="_blank" rel="noreferrer" className="btn-minimized-maps">
+              <Navigation size={13} /> View on Google Maps <ArrowUpRight size={12} />
+            </a>
+            <button type="button" className="btn-minimized-copy" onClick={handleCopy}>
+              {copied ? <Check size={13} className="copied-check" /> : <Copy size={13} />}
+              <span>{copied ? 'Copied!' : 'Copy Address'}</span>
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="dir-box-body">
         {/* Animated Map Canvas */}
         <div className="dir-map-stage">
           <div className="dir-map-viewport">
@@ -1114,6 +1146,7 @@ function DirectionsMapBox({ address, onCopyAddress }) {
           </div>
         </div>
       </div>
+      )}
 
       {/* Footer of the Box */}
       <div className="dir-box-footer">
