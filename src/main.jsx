@@ -1693,73 +1693,207 @@ function App() {
       </section>
 
       <section className="visit-section" id="visit">
-        <div className="visit-deco"><div className="visit-ring ring-a"/><div className="visit-ring ring-b"/><div className="visit-ring ring-c"/><div className="visit-spark">✳</div></div>
+        <div className="visit-deco">
+          <div className="visit-ring ring-a" />
+          <div className="visit-ring ring-b" />
+          <div className="visit-ring ring-c" />
+          <div className="visit-spark">✳</div>
+        </div>
         
-        {/* Top Split: Section Title, Quick Info & Real Photo of Cafe Helados */}
-        <div className="visit-top-grid">
+        {/* Main 2-Column Split: Detailed Location & Directions Guide + Square Directions Map Box */}
+        <div className="visit-main-grid">
           <div className="visit-content reveal">
-            <span className="section-index">08 — YOUR TABLE IS WAITING</span>
-            <h2>See you<br/><em>in a little bit?</em></h2>
-            <p>Bring your people. Bring your appetite. We'll be the place with the good stuff — soft arched corners, artisan coffee, and sweet indulgences right here in Charan Bagh.</p>
+            <span className="section-index">08 — FIND US & DIRECTIONS</span>
+            <h2>Come find us<br /><em>in Charan Bagh.</em></h2>
+            <p>
+              Tucked into the quiet arched lanes of Charan Bagh, right behind Manipal Hospital 
+              (formerly Columbia Asia) and just 1 minute off Bhupindra Road. Whether you are craving 
+              freshly churned artisan gelato, slow-poured espresso, or warm savory bites, here is 
+              everything you need to reach our door.
+            </p>
             
-            <div className="visit-quick-specs">
-              <div className="visit-spec-item">
-                <MapPin size={18} className="spec-icon" />
-                <div>
+            {/* 4-Card Location Specs Grid */}
+            <div className="visit-specs-grid">
+              <div className="visit-spec-card">
+                <div className="spec-card-icon">
+                  <MapPin size={17} />
+                </div>
+                <div className="spec-card-info">
+                  <span className="spec-tag">EXACT LOCATION</span>
                   <strong>Charan Bagh, Patiala</strong>
-                  <p>Behind Columbia Asia (Manipal Hospital), Opp. Punjabi Bagh Lane</p>
+                  <p>Behind Columbia Asia (Manipal Hospital), Opp. Punjabi Bagh Lane, Punjab 147004</p>
                 </div>
               </div>
-              <div className="visit-spec-item">
-                <Clock3 size={18} className="spec-icon" />
-                <div>
-                  <strong>Open Daily until 10:55 PM</strong>
-                  <p>Dine-in · Takeaway · Online Delivery across Patiala</p>
+
+              <div className="visit-spec-card">
+                <div className="spec-card-icon">
+                  <Clock3 size={17} />
+                </div>
+                <div className="spec-card-info">
+                  <span className="spec-tag">OPERATING HOURS</span>
+                  <strong>Open Daily · 11 AM – 10:55 PM</strong>
+                  <p>7 Days a week · Dine-In, Fresh Counter Takeaway & City Delivery</p>
+                </div>
+              </div>
+
+              <div className="visit-spec-card">
+                <div className="spec-card-icon">
+                  <Car size={17} />
+                </div>
+                <div className="spec-card-info">
+                  <span className="spec-tag">PARKING & ACCESS</span>
+                  <strong>Free Customer Parking Outside</strong>
+                  <p>Quiet paved lane with dedicated street-level vehicle parking & easy turning</p>
+                </div>
+              </div>
+
+              <div className="visit-spec-card">
+                <div className="spec-card-icon">
+                  <Phone size={17} />
+                </div>
+                <div className="spec-card-info">
+                  <span className="spec-tag">COUNTER CONTACT</span>
+                  <strong>+91 98765 43210</strong>
+                  <p>Call our counter for table reservations or live location guidance</p>
                 </div>
               </div>
             </div>
 
+            {/* Distance & Route Landmarks from Major City Points */}
+            <div className="city-routes-banner">
+              <span className="routes-title">
+                <Compass size={13} />
+                <span>HOW TO REACH FROM MAJOR PATIALA HUBS:</span>
+              </span>
+              <div className="routes-pills">
+                <div className="route-pill">
+                  <span className="route-name">22 No. Phatak</span>
+                  <span className="route-dot" />
+                  <span className="route-eta">400m · 1 min drive / 4 min walk</span>
+                </div>
+                <div className="route-pill">
+                  <span className="route-name">Bhupindra Rd Market</span>
+                  <span className="route-dot" />
+                  <span className="route-eta">600m · 2 min drive</span>
+                </div>
+                <div className="route-pill">
+                  <span className="route-name">Thapar University</span>
+                  <span className="route-dot" />
+                  <span className="route-eta">2.8 km · 6–7 min drive</span>
+                </div>
+                <div className="route-pill">
+                  <span className="route-name">Railway Station / Bus Stand</span>
+                  <span className="route-dot" />
+                  <span className="route-eta">3.5 km · 10 min drive</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Action Navigation Bar */}
             <div className="visit-actions">
-              <a className="btn btn-primary" href={mapUrl} target="_blank" rel="noreferrer">
-                <Navigation size={15} /> Open in Google Maps <ArrowUpRight size={16}/>
+              <a className="btn btn-primary" href={mapUrl} target="_blank" rel="noreferrer" title="Open Google Maps Navigation">
+                <Navigation size={14} /> Open in Google Maps <ArrowUpRight size={14} />
               </a>
-              <button className="btn btn-ghost" onClick={()=>{navigator.clipboard?.writeText(address);setNotice('Cafe address copied to clipboard');setTimeout(()=>setNotice(''),2200)}}>
-                <Copy size={15}/> Copy address
+              <a 
+                className="btn btn-whatsapp-location" 
+                href={`https://wa.me/?text=${encodeURIComponent("Hi Cafe Helados! Please share your live location pin & directions.")}`}
+                target="_blank" 
+                rel="noreferrer"
+                title="Request live location pin on WhatsApp"
+              >
+                <MessageCircle size={14} /> WhatsApp Live Pin
+              </a>
+              <button 
+                type="button" 
+                className="btn btn-ghost" 
+                onClick={() => {
+                  navigator.clipboard?.writeText(address);
+                  setNotice('Cafe address copied to clipboard');
+                  setTimeout(() => setNotice(''), 2200);
+                }}
+                title="Copy exact cafe address"
+              >
+                <Copy size={14} /> Copy Address
               </button>
-              <button className="btn btn-book-outline" onClick={()=>setBookingOpen(true)}>
-                <Calendar size={15}/> Reserve Table
+              <button 
+                type="button" 
+                className="btn btn-book-outline" 
+                onClick={() => setBookingOpen(true)}
+                title="Reserve your table online"
+              >
+                <Calendar size={14} /> Reserve Table
               </button>
             </div>
           </div>
 
-          <div className="visit-photo-card reveal">
-            <div className="visit-photo-frame">
-              <img 
-                src="/cafe-helados-real.jpg" 
-                alt="Inside Cafe Helados Patiala with warm lighting and artisan counter" 
-                loading="lazy" 
-              />
-              <div className="visit-photo-glass-bar">
-                <div className="glass-bar-top">
-                  <span className="live-pill"><Sparkles size={11} /> CAFE HELADOS · PATIALA</span>
-                  <span className="rating-pill">⭐ 4.2 (339+ Google Reviews)</span>
+          {/* Right Column: Compact Square Directions Map Box */}
+          <div className="visit-map-column reveal">
+            <DirectionsMapBox 
+              address={address} 
+              onCopyAddress={() => {
+                navigator.clipboard?.writeText(address);
+                setNotice('Cafe address copied to clipboard');
+                setTimeout(() => setNotice(''), 2200);
+              }} 
+            />
+          </div>
+        </div>
+
+        {/* Bottom Banner: Real Cafe Photo Card & Guest Amenities */}
+        <div className="visit-experience-strip reveal">
+          <div className="visit-photo-frame">
+            <img 
+              src="/cafe-helados-real.jpg" 
+              alt="Inside Cafe Helados Patiala with warm lighting and artisan counter" 
+              loading="lazy" 
+            />
+            <div className="visit-photo-glass-bar">
+              <div className="glass-bar-top">
+                <span className="live-pill"><Sparkles size={11} /> CAFE HELADOS · PATIALA</span>
+                <span className="rating-pill">⭐ 4.2 (339+ Google Reviews)</span>
+              </div>
+              <h4>Inside Our Cozy Arched Space</h4>
+              <p>Gelato Counter · Slow Coffee Bar · Warm Ambient Seating</p>
+            </div>
+          </div>
+
+          <div className="visit-amenities-card">
+            <span className="amenities-tag">WHAT TO EXPECT WHEN YOU VISIT</span>
+            <h3>Thoughtfully curated for your comfort</h3>
+            <p>Everything designed so you can unwind, linger, and enjoy good company without the rush.</p>
+
+            <div className="amenities-list">
+              <div className="amenity-item">
+                <span className="amenity-icon">☕</span>
+                <div>
+                  <strong>Artisan Gelato & Brews</strong>
+                  <small>Freshly scooped daily gelato and slow espresso bar</small>
                 </div>
-                <h4>Inside Our Cozy Arched Space</h4>
-                <p>Gelato Counter · Slow Coffee Bar · Warm Ambient Seating</p>
+              </div>
+              <div className="amenity-item">
+                <span className="amenity-icon">🚗</span>
+                <div>
+                  <strong>Free Street Parking</strong>
+                  <small>Quiet, spacious lane with safe parking directly outside</small>
+                </div>
+              </div>
+              <div className="amenity-item">
+                <span className="amenity-icon">📶</span>
+                <div>
+                  <strong>High-Speed Guest WiFi</strong>
+                  <small>Fast internet & convenient laptop power outlets</small>
+                </div>
+              </div>
+              <div className="amenity-item">
+                <span className="amenity-icon">❄️</span>
+                <div>
+                  <strong>Full Climate Control</strong>
+                  <small>Cool, relaxed sanctuary from the Patiala weather</small>
+                </div>
               </div>
             </div>
           </div>
         </div>
-
-        {/* Animated Directions on Google Map Box */}
-        <DirectionsMapBox 
-          address={address} 
-          onCopyAddress={() => {
-            navigator.clipboard?.writeText(address);
-            setNotice('Cafe address copied to clipboard');
-            setTimeout(() => setNotice(''), 2200);
-          }} 
-        />
       </section>
 
       <section className="newsletter section-pad"><div className="newsletter-copy reveal"><span className="section-index">A NOTE FROM THE SWEET SIDE</span><h2>Good things<br/>in your <em>inbox.</em></h2><p>Occasional little updates, seasonal cravings, and reasons to treat yourself.</p></div><form className="newsletter-form reveal" onSubmit={e=>{e.preventDefault();if(email.trim()){setSubscribed(true);setEmail('')}}}><label htmlFor="email">YOUR EMAIL ADDRESS</label><div className="email-field"><input id="email" type="email" required placeholder="you@example.com" value={email} onChange={e=>setEmail(e.target.value)}/><button type="submit" aria-label="Subscribe"><ArrowRight size={20}/></button></div>{subscribed?<p className="form-success"><Check size={15}/> You're on the list — thanks for stopping by!</p>:<small>No spam. Just a little sweetness, now and then.</small>}</form></section>
