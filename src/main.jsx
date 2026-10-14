@@ -878,16 +878,16 @@ function DirectionsMapBox({ address, onCopyAddress }) {
   const steps = [
     {
       step: '01',
-      title: '22 No. Phatak & Bhupindra Road',
-      instruction: 'Start at the 22 No. Phatak intersection and head north onto the main Bhupindra Road stretch.',
+      title: '22 No. Phatak & Bhupindra Rd',
+      instruction: 'Start at the 22 No. Phatak intersection and head north onto Bhupindra Road.',
       landmark: 'Near Rapid Laboratory & Redtape Outlet',
       timeCar: '1 min',
       timeWalk: '4 mins'
     },
     {
       step: '02',
-      title: 'Turn at Columbia Asia (Manipal Hospital)',
-      instruction: 'Take the right turn just behind Manipal Hospital complex into the Charan Bagh lane.',
+      title: 'Turn at Columbia Asia Hospital',
+      instruction: 'Take right turn behind Manipal / Columbia Asia complex into Charan Bagh lane.',
       landmark: 'Behind Manipal / Columbia Asia Hospital',
       timeCar: '2 mins',
       timeWalk: '7 mins'
@@ -895,16 +895,16 @@ function DirectionsMapBox({ address, onCopyAddress }) {
     {
       step: '03',
       title: 'Backside DAV School Lane',
-      instruction: 'Continue along the quiet paved lane directly opposite the Punjabi Bagh residential lane.',
-      landmark: 'Back side of DAV School lane',
+      instruction: 'Continue along the quiet paved lane directly opposite Punjabi Bagh residential lane.',
+      landmark: 'Opposite Punjabi Bagh Lane',
       timeCar: '3 mins',
       timeWalk: '10 mins'
     },
     {
       step: '04',
       title: 'Arrive at Cafe Helados 🎉',
-      instruction: 'Cafe Helados will be on your right with warm ambient lighting & dedicated parking outside.',
-      landmark: 'Opp. Punjabi Bagh Lane, Charan Bagh',
+      instruction: 'Cafe Helados will be on your right with warm ambient lighting & dedicated parking.',
+      landmark: 'Charan Bagh, Patiala',
       timeCar: '4 mins',
       timeWalk: '12 mins'
     }
@@ -916,8 +916,18 @@ function DirectionsMapBox({ address, onCopyAddress }) {
     setTimeout(() => setCopied(false), 2200);
   };
 
+  const nextStep = () => {
+    setActiveStep((prev) => (prev + 1) % steps.length);
+  };
+
+  const prevStep = () => {
+    setActiveStep((prev) => (prev - 1 + steps.length) % steps.length);
+  };
+
+  const currentStep = steps[activeStep];
+
   return (
-    <div className={`directions-box-container reveal ${isMinimized ? 'minimized' : ''}`}>
+    <div className={`directions-box-container square-box reveal ${isMinimized ? 'minimized' : ''}`}>
       {/* Header bar */}
       <div className="dir-box-header">
         <div className="dir-box-title">
@@ -926,7 +936,7 @@ function DirectionsMapBox({ address, onCopyAddress }) {
             <span className="dot-core" />
           </div>
           <div>
-            <span className="dir-tag">GOOGLE MAPS DIRECTIONS · PATIALA</span>
+            <span className="dir-tag">GOOGLE MAPS · PATIALA</span>
             <h3>How to Reach <em>Cafe Helados</em></h3>
           </div>
         </div>
@@ -939,8 +949,8 @@ function DirectionsMapBox({ address, onCopyAddress }) {
               onClick={() => setTravelMode('drive')}
               aria-label="Driving route: 4 minutes"
             >
-              <Car size={13} />
-              <span>4 min drive</span>
+              <Car size={11} />
+              <span>4m</span>
             </button>
             <button 
               type="button" 
@@ -948,8 +958,8 @@ function DirectionsMapBox({ address, onCopyAddress }) {
               onClick={() => setTravelMode('walk')}
               aria-label="Walking route: 12 minutes"
             >
-              <Clock3 size={13} />
-              <span>12 min walk</span>
+              <Clock3 size={11} />
+              <span>12m</span>
             </button>
           </div>
 
@@ -959,8 +969,7 @@ function DirectionsMapBox({ address, onCopyAddress }) {
             onClick={() => setIsMinimized(!isMinimized)}
             title={isMinimized ? "Expand full map route" : "Minimize map box"}
           >
-            {isMinimized ? <Maximize2 size={13} /> : <Minimize2 size={13} />}
-            <span>{isMinimized ? 'Expand' : 'Minimize'}</span>
+            {isMinimized ? <Maximize2 size={11} /> : <Minimize2 size={11} />}
           </button>
         </div>
       </div>
@@ -970,24 +979,23 @@ function DirectionsMapBox({ address, onCopyAddress }) {
           <div className="dir-minimized-info">
             <span className="minimized-beacon">📍</span>
             <div>
-              <strong>Charan Bagh, Near Columbia Asia Hospital & 22 No. Phatak</strong>
-              <small>{travelMode === 'drive' ? '4 min drive' : '12 min walk'} · Patiala, Punjab 147004</small>
+              <strong>Charan Bagh, Near Columbia Asia & 22 No. Phatak</strong>
+              <small>{travelMode === 'drive' ? '4 min drive' : '12 min walk'} · Patiala</small>
             </div>
           </div>
           <div className="dir-minimized-actions">
             <a href={googleMapsUrl} target="_blank" rel="noreferrer" className="btn-minimized-maps">
-              <Navigation size={13} /> View on Google Maps <ArrowUpRight size={12} />
+              <Navigation size={11} /> Maps <ArrowUpRight size={10} />
             </a>
             <button type="button" className="btn-minimized-copy" onClick={handleCopy}>
-              {copied ? <Check size={13} className="copied-check" /> : <Copy size={13} />}
-              <span>{copied ? 'Copied!' : 'Copy Address'}</span>
+              {copied ? <Check size={11} className="copied-check" /> : <Copy size={11} />}
+              <span>{copied ? 'Copied' : 'Copy'}</span>
             </button>
           </div>
         </div>
       ) : (
-        <div className="dir-box-body">
-        {/* Animated Map Canvas */}
-        <div className="dir-map-stage">
+        <div className="dir-square-body">
+          {/* Square Map Viewport */}
           <div className="dir-map-viewport">
             <img 
               src="/cafe-helados-map.png" 
@@ -1039,12 +1047,12 @@ function DirectionsMapBox({ address, onCopyAddress }) {
               />
 
               {/* Waypoint 1: 22 No. Phatak Start Marker */}
-              <circle cx="750" cy="880" r="14" fill="#2d1a12" stroke="#e88a59" strokeWidth="4" />
-              <circle cx="750" cy="880" r="6" fill="#fff" />
+              <circle cx="750" cy="880" r={activeStep === 0 ? "17" : "13"} fill="#2d1a12" stroke="#e88a59" strokeWidth="4" />
+              <circle cx="750" cy="880" r={activeStep === 0 ? "7" : "5"} fill="#fff" />
 
               {/* Waypoint 2: Turn behind Manipal Hospital */}
-              <circle cx="685" cy="630" r="11" fill="#2d1a12" stroke="#e88a59" strokeWidth="3" />
-              <circle cx="685" cy="630" r="4.5" fill="#f7ca9f" />
+              <circle cx="685" cy="630" r={activeStep === 1 ? "15" : "10"} fill="#2d1a12" stroke="#e88a59" strokeWidth="3" />
+              <circle cx="685" cy="630" r={activeStep === 1 ? "6" : "4"} fill="#f7ca9f" />
 
               {/* Animated Radar Pulse Rings on Cafe Helados (x: 695, y: 485) */}
               <circle cx="695" cy="485" r="32" className="radar-circle radar-c1" />
@@ -1052,8 +1060,8 @@ function DirectionsMapBox({ address, onCopyAddress }) {
               <circle cx="695" cy="485" r="96" className="radar-circle radar-c3" />
 
               {/* Destination Beacon Pin */}
-              <circle cx="695" cy="485" r="20" fill="#c75b3d" stroke="#ffffff" strokeWidth="4" className="pin-pulse-core" />
-              <circle cx="695" cy="485" r="8" fill="#ffffff" />
+              <circle cx="695" cy="485" r="19" fill="#c75b3d" stroke="#ffffff" strokeWidth="3.5" className="pin-pulse-core" />
+              <circle cx="695" cy="485" r="7" fill="#ffffff" />
             </svg>
 
             {/* Live Floating Destination Chip */}
@@ -1061,13 +1069,8 @@ function DirectionsMapBox({ address, onCopyAddress }) {
               <span className="badge-pulse-indicator" />
               <div>
                 <strong>Cafe Helados</strong>
-                <small>⭐ 4.2 · Open daily till 10:55 PM</small>
+                <small>⭐ 4.2 · Till 10:55 PM</small>
               </div>
-            </div>
-
-            {/* Start point chip */}
-            <div className="dir-map-badge start-badge">
-              <span>📍 Start: 22 No. Phatak Rd</span>
             </div>
 
             {/* Open full map link chip */}
@@ -1078,92 +1081,81 @@ function DirectionsMapBox({ address, onCopyAddress }) {
               className="dir-map-launch-chip"
               title="Open location on Google Maps"
             >
-              <span>View on Google Maps</span>
-              <ExternalLink size={12} />
+              <span>Maps</span>
+              <ExternalLink size={10} />
             </a>
           </div>
-        </div>
 
-        {/* Turn-by-Turn Directions Stepper */}
-        <div className="dir-stepper-pane">
-          <div className="stepper-header">
-            <span className="stepper-tag">TURN-BY-TURN LANDMARKS</span>
-            <h4>Step-by-step route to our door</h4>
-          </div>
-
-          <div className="stepper-list">
-            {steps.map((item, idx) => (
-              <div 
-                key={item.step} 
-                className={`stepper-card ${activeStep === idx ? 'active' : ''}`}
-                onClick={() => setActiveStep(idx)}
-                role="button"
-                tabIndex={0}
-              >
-                <div className="stepper-num-col">
-                  <span className="stepper-num">{item.step}</span>
-                  {idx < steps.length - 1 && <span className="stepper-line" />}
+          {/* Compact Stepper & Action Controls inside Square Box */}
+          <div className="dir-square-controls">
+            {/* Step Pills & Controls */}
+            <div className="dir-step-pill-row">
+              <div className="step-pill-nav">
+                <button type="button" className="btn-step-arrow" onClick={prevStep} title="Previous waypoint step">
+                  <ArrowLeft size={11} />
+                </button>
+                <div className="step-pill-tabs">
+                  {steps.map((st, idx) => (
+                    <button
+                      key={st.step}
+                      type="button"
+                      className={`step-pill ${activeStep === idx ? 'active' : ''}`}
+                      onClick={() => setActiveStep(idx)}
+                      title={`Step ${st.step}: ${st.title}`}
+                    >
+                      <span>{st.step}</span>
+                    </button>
+                  ))}
                 </div>
-                <div className="stepper-info">
-                  <div className="stepper-title-row">
-                    <h5>{item.title}</h5>
-                    <span className="stepper-duration">
-                      {travelMode === 'drive' ? item.timeCar : item.timeWalk}
-                    </span>
-                  </div>
-                  <p>{item.instruction}</p>
-                  <div className="stepper-landmark">
-                    <MapPin size={11} />
-                    <span>{item.landmark}</span>
-                  </div>
-                </div>
+                <button type="button" className="btn-step-arrow" onClick={nextStep} title="Next waypoint step">
+                  <ArrowRight size={11} />
+                </button>
               </div>
-            ))}
-          </div>
 
-          {/* Action Buttons in Box */}
-          <div className="dir-actions-row">
-            <a 
-              href={googleMapsUrl} 
-              target="_blank" 
-              rel="noreferrer" 
-              className="btn-dir-cta"
-            >
-              <Navigation size={15} />
-              <span>Get Directions on Google Maps</span>
-              <ArrowUpRight size={15} />
-            </a>
+              <span className="dir-step-duration-badge">
+                <Clock3 size={10} />
+                <span>{travelMode === 'drive' ? currentStep.timeCar : currentStep.timeWalk}</span>
+              </span>
+            </div>
 
-            <button 
-              type="button" 
-              className="btn-dir-copy" 
-              onClick={handleCopy}
-              title="Copy address to clipboard"
-            >
-              {copied ? <Check size={14} className="copied-check" /> : <Copy size={14} />}
-              <span>{copied ? 'Address Copied!' : 'Copy Address'}</span>
-            </button>
+            {/* Active Step Details */}
+            <div className="dir-active-step-card">
+              <div className="active-step-head">
+                <h5>{currentStep.step}. {currentStep.title}</h5>
+              </div>
+              <p>{currentStep.instruction}</p>
+              <div className="active-step-meta">
+                <MapPin size={10} />
+                <span>{currentStep.landmark}</span>
+              </div>
+            </div>
+
+            {/* Square Box Bottom Action Buttons */}
+            <div className="dir-square-actions">
+              <a 
+                href={googleMapsUrl} 
+                target="_blank" 
+                rel="noreferrer" 
+                className="btn-dir-cta"
+              >
+                <Navigation size={12} />
+                <span>Get Directions</span>
+                <ArrowUpRight size={12} />
+              </a>
+
+              <button 
+                type="button" 
+                className="btn-dir-copy" 
+                onClick={handleCopy}
+                title="Copy address to clipboard"
+              >
+                {copied ? <Check size={12} className="copied-check" /> : <Copy size={12} />}
+                <span>{copied ? 'Copied' : 'Copy'}</span>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
       )}
-
-      {/* Footer of the Box */}
-      <div className="dir-box-footer">
-        <div className="footer-addr-snippet">
-          <MapPin size={13} />
-          <span>{address}</span>
-        </div>
-        <div className="footer-links">
-          <a href={directNavigationUrl} target="_blank" rel="noreferrer">
-            <Car size={13} /> Live GPS Navigation
-          </a>
-          <span>·</span>
-          <a href={googleMapsUrl} target="_blank" rel="noreferrer">
-            Open in Google Maps App <ArrowUpRight size={11} />
-          </a>
-        </div>
-      </div>
     </div>
   );
 }

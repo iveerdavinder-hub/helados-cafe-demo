@@ -154,69 +154,160 @@
 }
 
 /* ========================================================
-   ANIMATED DIRECTIONS ON GOOGLE MAP BOX (MINIMIZED & COMPACT)
+   ANIMATED DIRECTIONS MAP BOX (COMPACT SQUARE BOX)
    ======================================================== */
 .directions-box-container {
-  margin-top: 36px;
-  max-width: 980px;
-  margin-left: auto;
-  margin-right: auto;
+  max-width: 480px;
+  width: 100%;
+  margin: 0 auto;
   background: linear-gradient(145deg, #241711 0%, #1a100b 100%);
   border: 1px solid rgba(247, 208, 166, 0.22);
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 20px 60px rgba(18, 10, 6, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  box-shadow: 0 16px 45px rgba(18, 10, 6, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
   color: #f6ecdf;
   position: relative;
   z-index: 3;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.directions-box-container.square-box {
+  max-width: 480px;
+  aspect-ratio: 1 / 1;
 }
 
 .directions-box-container.minimized {
-  margin-top: 24px;
+  aspect-ratio: auto;
+  margin-top: 14px;
   border-color: rgba(247, 208, 166, 0.28);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45);
 }
 
 .dir-box-header {
-  padding: 13px 20px;
+  padding: 10px 14px;
   border-bottom: 1px solid rgba(247, 208, 166, 0.12);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(36, 23, 17, 0.75);
+  background: rgba(36, 23, 17, 0.85);
   backdrop-filter: blur(10px);
-  flex-wrap: wrap;
-  gap: 12px;
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+.dir-box-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.live-radar-dot {
+  position: relative;
+  width: 11px;
+  height: 11px;
+  display: grid;
+  place-items: center;
+}
+
+.dot-pulse {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: rgba(46, 213, 115, 0.4);
+  animation: radarWave 2s ease-out infinite;
+}
+
+.dot-core {
+  position: relative;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #2ed573;
+  box-shadow: 0 0 8px #2ed573;
+}
+
+.dir-tag {
+  display: block;
+  font-size: 7px;
+  letter-spacing: 1.4px;
+  font-weight: 700;
+  color: #e88a59;
+  text-transform: uppercase;
+}
+
+.dir-box-title h3 {
+  font-family: var(--serif);
+  font-size: 15px;
+  margin: 1px 0 0;
+  font-weight: 500;
+  color: #fff4ea;
+}
+
+.dir-box-title h3 em {
+  color: #e88a59;
+  font-style: italic;
 }
 
 .dir-header-actions {
   display: flex;
   align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.travel-mode-tabs {
+  display: flex;
+  gap: 4px;
+  background: rgba(18, 11, 7, 0.6);
+  padding: 2px;
+  border-radius: 20px;
+  border: 1px solid rgba(247, 208, 166, 0.12);
+}
+
+.mode-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 16px;
+  border: 0;
+  background: transparent;
+  color: #baa696;
+  font-size: 9px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.mode-tab:hover {
+  color: #fff;
+}
+
+.mode-tab.active {
+  background: #c75b3d;
+  color: #fff3e7;
+  box-shadow: 0 2px 8px rgba(199, 91, 61, 0.4);
 }
 
 .btn-dir-minimize {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: 20px;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
   background: rgba(232, 138, 89, 0.12);
   border: 1px solid rgba(232, 138, 89, 0.3);
   color: #ffcda5;
-  font-size: 10px;
-  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
+  padding: 0;
 }
 
 .btn-dir-minimize:hover {
   background: rgba(232, 138, 89, 0.25);
-  border-color: #e88a59;
   color: #fff;
-  transform: translateY(-1px);
+  transform: scale(1.05);
 }
 
 /* Minimized quick bar */
@@ -224,31 +315,31 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 20px;
+  padding: 12px 16px;
   background: rgba(22, 13, 8, 0.7);
-  gap: 16px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
 .dir-minimized-info {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 9px;
 }
 
 .minimized-beacon {
-  font-size: 16px;
+  font-size: 15px;
 }
 
 .dir-minimized-info strong {
   display: block;
-  font-size: 11.5px;
+  font-size: 11px;
   color: #fff2e4;
 }
 
 .dir-minimized-info small {
   display: block;
-  font-size: 9.5px;
+  font-size: 9px;
   color: #a89484;
   margin-top: 2px;
 }
@@ -256,26 +347,26 @@
 .dir-minimized-actions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
 }
 
 .btn-minimized-maps {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
+  gap: 5px;
+  padding: 6px 12px;
   border-radius: 20px;
   background: linear-gradient(135deg, #c75b3d 0%, #aa4528 100%);
   border: 1px solid rgba(247, 208, 166, 0.3);
   color: #fff;
-  font-size: 10px;
+  font-size: 9.5px;
   font-weight: 700;
   text-decoration: none;
   transition: all 0.2s ease;
 }
 
 .btn-minimized-maps:hover {
-  background: linear-gradient(135deg, #d86948 0%, #b84c2e 100%);
+  background: linear-gradient(135deg, #d86944 0%, #b84c2e 100%);
   transform: translateY(-1.5px);
   box-shadow: 0 4px 14px rgba(199, 91, 61, 0.4);
 }
@@ -283,13 +374,13 @@
 .btn-minimized-copy {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 7px 12px;
+  gap: 4px;
+  padding: 6px 10px;
   border-radius: 20px;
   background: rgba(43, 26, 17, 0.8);
   border: 1px solid rgba(247, 208, 166, 0.2);
   color: #e5cbba;
-  font-size: 10px;
+  font-size: 9.5px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -302,117 +393,26 @@
   transform: translateY(-1.5px);
 }
 
-.dir-box-title {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.live-radar-dot {
-  position: relative;
-  width: 12px;
-  height: 12px;
-  display: grid;
-  place-items: center;
-}
-
-.dot-pulse {
-  position: absolute;
-  inset: -5px;
-  border-radius: 50%;
-  background: rgba(46, 213, 115, 0.4);
-  animation: radarWave 2s ease-out infinite;
-}
-
-.dot-core {
-  position: relative;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #2ed573;
-  box-shadow: 0 0 10px #2ed573;
-}
-
-.dir-tag {
-  display: block;
-  font-size: 7.5px;
-  letter-spacing: 1.6px;
-  font-weight: 700;
-  color: #e88a59;
-  text-transform: uppercase;
-}
-
-.dir-box-title h3 {
-  font-family: var(--serif);
-  font-size: 19px;
-  margin: 1px 0 0;
-  font-weight: 500;
-  color: #fff4ea;
-}
-
-.dir-box-title h3 em {
-  color: #e88a59;
-  font-style: italic;
-}
-
-.travel-mode-tabs {
-  display: flex;
-  gap: 6px;
-  background: rgba(18, 11, 7, 0.6);
-  padding: 3px;
-  border-radius: 30px;
-  border: 1px solid rgba(247, 208, 166, 0.12);
-}
-
-.mode-tab {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 6px 12px;
-  border-radius: 20px;
-  border: 0;
-  background: transparent;
-  color: #baa696;
-  font-size: 9.5px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.25s;
-}
-
-.mode-tab:hover {
-  color: #fff;
-}
-
-.mode-tab.active {
-  background: #c75b3d;
-  color: #fff3e7;
-  box-shadow: 0 3px 12px rgba(199, 91, 61, 0.4);
-}
-
-.dir-box-body {
-  display: grid;
-  grid-template-columns: 360px 1fr;
-}
-
 /* ========================================================
-   ANIMATED MAP VIEWPORT & RADAR ROUTE
+   SQUARE BOX BODY & MAP VIEWPORT
    ======================================================== */
-.dir-map-stage {
-  padding: 16px;
+.dir-square-body {
   display: flex;
-  background: rgba(18, 11, 7, 0.35);
-  border-right: 1px solid rgba(247, 208, 166, 0.1);
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  padding: 9px;
+  gap: 8px;
 }
 
 .dir-map-viewport {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 11;
-  min-height: 220px;
-  max-height: 260px;
-  border-radius: 14px;
+  flex: 1;
+  min-height: 190px;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.6), 0 6px 18px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.6), 0 4px 12px rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(247, 208, 166, 0.18);
   background: #17100b;
 }
@@ -421,12 +421,12 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: contrast(1.05) brightness(0.9);
+  filter: contrast(1.05) brightness(0.92);
   transition: transform 0.6s ease;
 }
 
 .dir-map-viewport:hover .dir-map-img {
-  transform: scale(1.03);
+  transform: scale(1.02);
 }
 
 .dir-route-svg {
@@ -582,255 +582,198 @@
 }
 
 /* ========================================================
-   TURN-BY-TURN STEPPER PANE (COMPACT)
+   SQUARE BOX STEP CONTROLS & ACTIONS
    ======================================================== */
-.dir-stepper-pane {
-  padding: 16px 20px;
+.dir-square-controls {
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
+  gap: 6px;
+  background: rgba(28, 17, 12, 0.85);
+  border: 1px solid rgba(247, 208, 166, 0.12);
+  border-radius: 12px;
+  padding: 7px 9px;
+}
+
+.dir-step-pill-row {
+  display: flex;
   justify-content: space-between;
-}
-
-.stepper-header {
-  margin-bottom: 10px;
-}
-
-.stepper-tag {
-  font-size: 7.5px;
-  letter-spacing: 1.4px;
-  font-weight: 700;
-  color: #e88a59;
-  text-transform: uppercase;
-}
-
-.stepper-header h4 {
-  font-family: var(--serif);
-  font-size: 16px;
-  font-weight: 500;
-  margin: 2px 0 0;
-  color: #fff1e3;
-}
-
-.stepper-list {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-}
-
-.stepper-card {
-  display: grid;
-  grid-template-columns: 24px 1fr;
-  gap: 10px;
-  padding: 8px 12px;
-  border-radius: 10px;
-  border: 1px solid rgba(247, 208, 166, 0.08);
-  background: rgba(36, 23, 17, 0.45);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.stepper-card:hover {
-  background: rgba(48, 30, 22, 0.8);
-  border-color: rgba(247, 208, 166, 0.25);
-  transform: translateX(3px);
-}
-
-.stepper-card.active {
-  background: linear-gradient(135deg, rgba(74, 40, 26, 0.75) 0%, rgba(42, 23, 15, 0.85) 100%);
-  border-color: rgba(232, 138, 89, 0.45);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
-}
-
-.stepper-num-col {
-  display: flex;
-  flex-direction: column;
   align-items: center;
-}
-
-.stepper-num {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: rgba(23, 14, 9, 0.9);
-  border: 1px solid rgba(247, 208, 166, 0.25);
-  display: grid;
-  place-items: center;
-  font-size: 9px;
-  font-weight: 700;
-  color: #e88a59;
-  transition: all 0.2s;
-}
-
-.stepper-card.active .stepper-num {
-  background: #c75b3d;
-  color: #fff;
-  border-color: #f7ca9f;
-  transform: scale(1.05);
-}
-
-.stepper-line {
-  flex: 1;
-  width: 1px;
-  background: rgba(247, 208, 166, 0.18);
-  margin-top: 4px;
-}
-
-.stepper-info {
-  min-width: 0;
-}
-
-.stepper-title-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
   gap: 8px;
 }
 
-.stepper-info h5 {
-  margin: 0;
-  font-family: var(--serif);
-  font-size: 12.5px;
-  font-weight: 500;
-  color: #fff2e4;
+.step-pill-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
-.stepper-duration {
-  font-size: 8.5px;
+.btn-step-arrow {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(43, 26, 17, 0.8);
+  border: 1px solid rgba(247, 208, 166, 0.2);
+  color: #e5cbba;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 0;
+}
+
+.btn-step-arrow:hover {
+  background: #c75b3d;
+  color: #fff;
+  border-color: #f7ca9f;
+}
+
+.step-pill-tabs {
+  display: flex;
+  gap: 4px;
+}
+
+.step-pill {
+  width: 21px;
+  height: 21px;
+  border-radius: 50%;
+  background: rgba(43, 26, 17, 0.8);
+  border: 1px solid rgba(247, 208, 166, 0.15);
+  color: #c9b7a6;
+  font-size: 8px;
   font-weight: 700;
-  color: #e88a59;
-  background: rgba(232, 138, 89, 0.12);
-  padding: 1px 6px;
-  border-radius: 8px;
-  white-space: nowrap;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 0;
 }
 
-.stepper-info p {
-  margin: 2px 0 4px;
-  font-size: 9.5px;
-  line-height: 1.45;
-  color: #baa99a;
+.step-pill:hover {
+  background: rgba(60, 36, 24, 0.95);
+  border-color: rgba(247, 208, 166, 0.4);
+  color: #fff;
 }
 
-.stepper-landmark {
+.step-pill.active {
+  background: #c75b3d;
+  border-color: #f7ca9f;
+  color: #fff;
+  transform: scale(1.08);
+  box-shadow: 0 2px 8px rgba(199, 91, 61, 0.5);
+}
+
+.dir-step-duration-badge {
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  font-size: 8px;
+  font-weight: 700;
+  color: #e88a59;
+  background: rgba(232, 138, 89, 0.12);
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+/* Active Step Card */
+.dir-active-step-card {
+  background: rgba(20, 12, 8, 0.6);
+  border: 1px solid rgba(247, 208, 166, 0.08);
+  border-radius: 8px;
+  padding: 6px 8px;
+}
+
+.active-step-head h5 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff2e4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dir-active-step-card p {
+  margin: 2px 0;
   font-size: 8.5px;
+  line-height: 1.35;
+  color: #baa99a;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.active-step-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 7.5px;
   color: #d6b39d;
 }
 
-.stepper-landmark svg {
+.active-step-meta svg {
   color: #e88a59;
-  flex-shrink: 0;
 }
 
-/* ========================================================
-   ACTION ROW IN DIRECTIONS BOX (COMPACT)
-   ======================================================== */
-.dir-actions-row {
-  display: flex;
-  gap: 10px;
-  margin-top: 14px;
-  flex-wrap: wrap;
+/* Square Box Action Buttons */
+.dir-square-actions {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px;
 }
 
-.btn-dir-cta {
-  flex: 1;
-  min-width: 170px;
+.dir-square-actions .btn-dir-cta {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding: 9px 14px;
-  border-radius: 20px;
+  gap: 5px;
+  padding: 6px 10px;
+  border-radius: 16px;
   background: linear-gradient(135deg, #d86944 0%, #b85032 100%);
   color: #fff3e7;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
   text-decoration: none;
   border: 1px solid rgba(255, 190, 150, 0.35);
-  box-shadow: 0 4px 14px rgba(199, 91, 61, 0.4);
-  transition: all 0.22s ease;
+  box-shadow: 0 3px 10px rgba(199, 91, 61, 0.4);
+  transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
-.btn-dir-cta:hover {
-  transform: translateY(-2px);
+.dir-square-actions .btn-dir-cta:hover {
+  transform: translateY(-1.5px);
   background: linear-gradient(135deg, #e77651 0%, #c45b3d 100%);
-  box-shadow: 0 6px 20px rgba(199, 91, 61, 0.55);
+  box-shadow: 0 5px 14px rgba(199, 91, 61, 0.55);
 }
 
-.btn-dir-copy {
+.dir-square-actions .btn-dir-copy {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 7px;
-  padding: 13px 18px;
-  border-radius: 30px;
-  background: rgba(43, 27, 18, 0.7);
+  gap: 4px;
+  padding: 6px 10px;
+  border-radius: 16px;
+  background: rgba(43, 27, 18, 0.85);
   border: 1px solid rgba(247, 208, 166, 0.22);
   color: #f7e6d4;
-  font-size: 11px;
+  font-size: 9px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
+  white-space: nowrap;
 }
 
-.btn-dir-copy:hover {
-  background: rgba(56, 35, 23, 0.95);
+.dir-square-actions .btn-dir-copy:hover {
+  background: rgba(56, 35, 23, 0.98);
   border-color: rgba(247, 208, 166, 0.45);
   color: #fff;
-  transform: translateY(-2px);
+  transform: translateY(-1.5px);
 }
 
 .copied-check {
   color: #2ed573;
-}
-
-/* ========================================================
-   DIRECTIONS BOX FOOTER
-   ======================================================== */
-.dir-box-footer {
-  padding: 16px 28px;
-  background: rgba(14, 9, 6, 0.85);
-  border-top: 1px solid rgba(247, 208, 166, 0.08);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  font-size: 10px;
-  color: #a79788;
-}
-
-.footer-addr-snippet {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  max-width: 550px;
-}
-
-.footer-addr-snippet svg {
-  color: #e88a59;
-  flex-shrink: 0;
-}
-
-.footer-links {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.footer-links a {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  color: #e88a59;
-  text-decoration: underline;
-  transition: color 0.2s;
-}
-
-.footer-links a:hover {
-  color: #fff;
 }
 
 /* Responsive updates for Directions Box & Visit Card */
@@ -839,17 +782,9 @@
     grid-template-columns: 1fr;
     gap: 35px;
   }
-  .dir-box-body {
-    grid-template-columns: 1fr;
-  }
-  .dir-map-stage {
-    border-right: 0;
-    border-bottom: 1px solid rgba(247, 208, 166, 0.1);
-  }
-  .dir-map-viewport {
-    min-height: 220px;
-    max-height: 270px;
-    aspect-ratio: 16 / 10;
+  .directions-box-container.square-box {
+    max-width: 440px;
+    margin: 24px auto 0;
   }
 }
 
@@ -861,39 +796,27 @@
   .visit-photo-frame {
     height: 280px;
   }
-  .dir-box-header {
-    padding: 12px 16px;
-  }
-  .dir-box-title h3 {
-    font-size: 17px;
-  }
-  .dir-stepper-pane {
-    padding: 14px 16px;
-  }
-  .dir-map-stage {
-    padding: 12px;
+  .directions-box-container.square-box {
+    max-width: 100%;
+    aspect-ratio: auto;
+    min-height: 440px;
+    margin: 28px auto 0;
   }
   .dir-map-viewport {
-    min-height: 190px;
-    max-height: 230px;
-    aspect-ratio: 16 / 10;
+    min-height: 180px;
+    max-height: 220px;
   }
-  .dir-actions-row {
-    flex-direction: column;
+  .dir-box-header {
+    padding: 10px 14px;
   }
-  .btn-dir-cta, .btn-dir-copy {
-    width: 100%;
-  }
-  .dir-box-footer {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 12px 16px;
+  .dir-box-title h3 {
+    font-size: 15px;
   }
   .dir-minimized-strip {
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
-    padding: 12px 16px;
+    padding: 12px 14px;
   }
   .dir-minimized-actions {
     width: 100%;
@@ -910,15 +833,12 @@
   .visit-photo-glass-bar h4 {
     font-size: 16px;
   }
-  .stepper-card {
-    padding: 10px;
-    gap: 10px;
+  .directions-box-container.square-box {
+    min-height: auto;
   }
-  .stepper-info h5 {
-    font-size: 13px;
-  }
-  .stepper-info p {
-    font-size: 9px;
+  .dir-map-viewport {
+    min-height: 160px;
+    max-height: 190px;
   }
   .travel-mode-tabs {
     width: 100%;
@@ -927,7 +847,7 @@
   .mode-tab {
     flex: 1;
     justify-content: center;
-    padding: 7px 10px;
+    padding: 5px 8px;
   }
 }
 
